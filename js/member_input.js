@@ -145,9 +145,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
                 const f_addr1 = document.querySelector("#f_addr1")
+                const f_addr2 = document.querySelector("#f_addr2")
                 const zipcode = document.querySelector("#zipcode")
                 zipcode.value = data.zonecode;
                 f_addr1.value = addr;
+                f_addr2.focus();
             }
         }).open();
     })
