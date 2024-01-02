@@ -15,10 +15,10 @@ document.addEventListener("DOMContentLoaded", () => {
         //     return false;
         // }
 
-        const f = document.stipulation_form
+        const f = document.stipulation_form;
         f.chk.value = 1;
         f.submit();
-        // self.location.href ='./member_input.php'
+        self.location.href ='./member_input.php';
     })
 
    
