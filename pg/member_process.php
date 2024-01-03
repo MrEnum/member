@@ -54,6 +54,7 @@ if ($mode == 'id_chk') {
 
     } else {
 
+
         //profile image 처리
         $temparr = explode('.', $_FILES['photo']['name']);    // ['2','jpg']
         $ext = end($temparr);    // ['2','jpg']
@@ -78,6 +79,7 @@ if ($mode == 'id_chk') {
     echo "
     <script>
     self.location.href='../member_success.php'
+
     </script>";
 } else if ($mode == "edit") {
     echo'<script> alert("여긴 수정모드");</script>';
@@ -104,6 +106,7 @@ if ($mode == 'id_chk') {
     <script>
     alert('수정되었습니다.');
     self.location.href='../index.php'
+
     </script>";
 }
 
