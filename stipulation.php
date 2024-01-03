@@ -1,7 +1,7 @@
 <?php
 
 $js_array = ['js/member.js'];
-
+$menu_code = 'member';
 include 'inc_header.php';
 ?>
 

@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>약관</title>
+  <title><?=(isset($g_title) && $g_title != '') ? $g_title : '네카라쿠배';?></title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
@@ -13,11 +13,11 @@
 
 
   <?php
- // if (isset($js_Array)) {
+  //if (isset($js_Array)) {
     foreach ($js_array AS $var) {
       echo '<script src="' . $var . '?v=' . date('YmdHis') . '"></script>' . PHP_EOL;
     }
- // }
+  //}
 
   ?>
 
@@ -36,10 +36,10 @@
 
 
       <ul class="nav nav-pills">
-        <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Home</a></li>
-        <li class="nav-item"><a href="#" class="nav-link">회사소개</a></li>
-        <li class="nav-item"><a href="#" class="nav-link">회원가입</a></li>
-        <li class="nav-item"><a href="#" class="nav-link">게시판</a></li>
-        <li class="nav-item"><a href="#" class="nav-link active">로그인</a></li>
+        <li class="nav-item"><a href="index.php" class="nav-link <?= ($menu_code == '') ? 'active' : '' ; ?>" aria-current="page">Home</a></li>
+        <li class="nav-item"><a href="compnay.php" class="nav-link <?= ($menu_code == 'compnay') ? 'active' : '' ; ?>">회사소개</a></li>
+        <li class="nav-item"><a href="stipulation.php" class="nav-link <?=($menu_code == 'member') ? 'active' : '' ; ?>">회원가입</a></li>
+        <li class="nav-item"><a href="board.php" class="nav-link <?= ($menu_code == 'board') ? 'active' : '' ; ?>">게시판</a></li>
+        <li class="nav-item"><a href="login.php" class="nav-link  <?= ($menu_code == 'login') ? 'active' : '' ; ?>">로그인</a></li>
       </ul>
     </header>

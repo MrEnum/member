@@ -33,10 +33,10 @@ if ($mode == 'id_chk') {
         die(json_encode(['result' => 'empty_email']));
     }
 
-    //이메일 형식 확인
-    if($mem->email_format_check($email) === false){
-        die(json_encode(['result'=> 'email_format_wrong']));
-    }
+    // //이메일 형식 확인
+    // if ($mem->email_format_check($email) === false) {
+    //     die(json_encode(['result' => 'email_format_wrong']));
+    // }
 
     if ($mem->email_exists(trim($email))) {
         die(json_encode(['result' => 'fail']));
@@ -45,13 +45,20 @@ if ($mode == 'id_chk') {
     }
 
 } else if ($mode == 'input') {
-    //profile image 처리
-    $temparr = explode('.', $_FILES['photo']['name']);    // ['2','jpg']
-    $ext = end($temparr);    // ['2','jpg']
+    if (isset($_FILES['photo']['name']) || $_FILES['photo']['name'] == '') {
 
-    $photo = $id . '.' . $ext;
+        $photo = '';
 
-    copy($_FILES['photo']['tmp_name'], "../data/profile/" . $photo);
+    } else {
+        //profile image 처리
+        $temparr = explode('.', $_FILES['photo']['name']);    // ['2','jpg']
+        $ext = end($temparr);    // ['2','jpg']
+
+        $photo = $id . '.' . $ext;
+
+        copy($_FILES['photo']['tmp_name'], "../data/profile/" . $photo);
+    }
+
     $arr = [
         'id' => $id,
         'email' => $email,
@@ -66,7 +73,7 @@ if ($mode == 'id_chk') {
 
     echo "
     <script>
-    self.location.href='../member_success/php'
+    self.location.href='../member_success.php'
     </script>";
 }
 

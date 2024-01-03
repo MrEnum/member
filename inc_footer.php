@@ -1,3 +1,6 @@
+</div>
+
+
 <footer class="footer mt-5 py-3 bg-primary">
     <div class="container  d-flex gap-1">
         <img src="images/logo.svg" style="width: 5rem;" class="me-2">
@@ -10,9 +13,7 @@
     </div>
 
 </footer>
-
-</div>
-
 </body>
+
 
 </html>
