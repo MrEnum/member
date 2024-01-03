@@ -56,4 +56,15 @@ class Member
     public function email_format_check($email){
         return filter_var($email, FILTER_VALIDATE_EMAIL);
     }
+
+    //로그인
+    public function login($id, $pw){
+        $sql = 'SELECT * FROM member where id=:id and password= :password';
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(":id", $id);
+        $stmt->bindParam(":password", $pw);
+        $stmt->execute();
+
+        return $stmt->rowCount() ? true : false;
+    }
 }
