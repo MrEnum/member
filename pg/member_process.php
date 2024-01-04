@@ -45,11 +45,13 @@ if ($mode == 'id_chk') {
     }
 
 } else if ($mode == 'input') {
-    if (isset($_FILES['photo']['name']) || $_FILES['photo']['name'] == '') {
+
+    if (!isset($_FILES['photo']['name']) || $_FILES['photo']['name'] == '') {
 
         $photo = '';
 
     } else {
+
         //profile image 처리
         $temparr = explode('.', $_FILES['photo']['name']);    // ['2','jpg']
         $ext = end($temparr);    // ['2','jpg']
@@ -74,6 +76,42 @@ if ($mode == 'id_chk') {
     echo "
     <script>
     self.location.href='../member_success.php'
+    </script>";
+} else if ($mode == "edit") {
+    
+    $first_photo = (isset($_POST['first_photo']) && $_POST['first_photo'] != '') ? $_POST['first_photo'] : '';
+    $photo ='';
+    if (isset($_FILES['photo']) && $_FILES['photo']['name'] != '') {
+
+        //이미지 update 시 삭제
+        if ($first_photo != '') {
+            unlink("../data/profile/" . $first_photo);
+        }
+
+        //profile image 처리
+        $temparr = explode('.', $_FILES['photo']['name']);    // ['2','jpg']
+        $ext = end($temparr);    // ['2','jpg']
+        $photo = $id . '.' . $ext;
+
+        copy($_FILES['photo']['tmp_name'], "../data/profile/" . $photo);
+    }
+    session_start();
+    $arr = [
+        'id' => $_SESSION['ses_id'],
+        'email' => $email,
+        'password' => $password,
+        'name' => $name,
+        'zipcode' => $zipcode,
+        'addr1' => $addr1,
+        'addr2' => $addr2,
+        'photo' => $first_photo
+    ];
+    $mem->edit($arr);
+
+    echo "
+    <script>
+    alert('수정되었습니다.');
+    self.location.href='../index.php'
     </script>";
 }
 

@@ -42,7 +42,7 @@ class Member
         $stmt->bindParam(":id", $marray['id']);
         $stmt->bindParam(":name", $marray['name']);
         $stmt->bindParam(":password", $new_hash_password);
-        $stmt->bindParam(":email", $marray['iemaild']);
+        $stmt->bindParam(":email", $marray['email']);
         $stmt->bindParam(":zipcode", $marray['zipcode']);
         $stmt->bindParam(":addr1", $marray['addr1']);
         $stmt->bindParam(":addr2", $marray['addr2']);
@@ -81,7 +81,7 @@ class Member
 
                 $stmt->execute();
                 return true;
-            }else{
+            } else {
                 return false;
             }
         } else {
@@ -92,10 +92,57 @@ class Member
         // return $stmt->rowCount() ? true : false;
     }
 
-    public function logout(){
+    public function logout()
+    {
         session_Start();
         session_destroy();
 
         die('<script>self.location.href="../index.php";</script>');
+    }
+
+    public function getInfo($id)
+    {
+        $sql = "SELECT * FROM member WHERE  id=:id";
+        $stmt = $this->conn->prepare($sql); //db커넥션 세팅
+        $stmt->bindParam(":id", $id);       //파라미터 바인딩
+        $stmt->setFetchMode(PDO::FETCH_ASSOC); //index값 말고 필드명으로만 나오게끔
+
+        $stmt->execute();
+        return $stmt->fetch();
+    }
+
+
+    public function edit($marray)
+    {
+
+        $sql = "UPDATE member SET 
+                name    =:name, 
+                email   =:email, 
+                zipcode =:zipcode, 
+                addr1   =:addr1, 
+                addr2   =:addr2,
+                photo   =:photo";
+
+        $params = [
+            ":id" => $marray['id'],
+            ":name" => $marray['name'],
+            ":email" => $marray['email'],
+            ":zipcode" => $marray['zipcode'],
+            ":addr1" => $marray['addr1'],
+            ":addr2" => $marray['addr2'],
+            ":photo" => $marray['photo']
+        ];
+        if ($marray["password"] != '') {
+            //단방향 암호화
+            $new_hash_password = password_hash($marray["password"], PASSWORD_DEFAULT);
+            $sql .= ", password=:password";
+            $params[':password'] = $new_hash_password;
+            
+        }
+        $sql .= " WHERE id=:id";
+        print_r($sql);
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute($params);
+        //프로필 이미지를 업데이트 했다면
     }
 }

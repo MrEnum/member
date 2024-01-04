@@ -17,7 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const f = document.stipulation_form;
         f.chk.value = 1;
-        alert(f.chk.value);
         f.submit();
         self.location.href ='./member_input.php';
     })
