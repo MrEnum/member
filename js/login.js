@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
                     return false;
                 }else if(data.result == 'login_success'){
                     alert("로그인에 성공했습니다.")
-                    //self.location.href-'./in' //로그인이 성공했을 때 이동하는 페이지
+                    self.location.href='./index.php' //로그인이 성공했을 때 이동하는 페이지
                 }
             }else{
                 alert('통신에 실패했습니다. 다시 시도해 주세요.');
