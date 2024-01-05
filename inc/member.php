@@ -137,7 +137,7 @@ class Member
             $new_hash_password = password_hash($marray["password"], PASSWORD_DEFAULT);
             $sql .= ", password=:password";
             $params[':password'] = $new_hash_password;
-            
+
         }
         $sql .= " WHERE id=:id";
         print_r($sql);
@@ -145,4 +145,61 @@ class Member
         $stmt->execute($params);
         //프로필 이미지를 업데이트 했다면
     }
+    //리스트
+    public function list($page, $limit, $paramArr)
+    {
+        $start = ($page - 1) * $limit;
+        $where ='';
+        if ($paramArr['sn'] != '' && $paramArr['sf'] != '') {
+            switch($paramArr['sn']){
+                case 1 : $sn_str ='name'; break;
+                case 2 : $sn_str = 'id'; break;
+                case 3 : $sn_str = 'email'; break;
+            }
+                $where=' WHERE '.$sn_str." like :sf ";
+        }
+
+     
+        $sql = "SELECT 
+                idx, id, name, email, DATE_FORMAT(create_at,'%Y-%m-%d %H:%i') create_at
+                     from member ".$where." 
+                     ORDER BY idx DESC LIMIT " . $start . ", " . $limit; //1페이지면 0
+        $stmt = $this->conn->prepare($sql);
+        if($where != ''){
+            $paramArr['sf'] = '%' . $paramArr['sf'] . '%';
+            $stmt->bindParam(':sf', $paramArr['sf']);
+        }
+        $stmt->setFetchMode(PDO::FETCH_ASSOC); //column으로 key가 매핑되게 가져오는 형식
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    public function total($paramArr)
+    {
+        $where ='';
+        if ($paramArr['sn'] != '' && $paramArr['sf'] != '') {
+            switch($paramArr['sn']){
+                case 1 : $sn_str ='name'; break;
+                case 2 : $sn_str = 'id'; break;
+                case 3 : $sn_str = 'email'; break;
+            }
+                $where=' WHERE '.$sn_str." like :sf ";
+        }
+
+
+        $sql = "SELECT COUNT(*) cnt from member ".$where;
+        $stmt = $this->conn->prepare($sql);
+        if($where != ''){
+            $paramArr['sf'] = '%' . $paramArr['sf'] . '%';
+            $stmt->bindParam(':sf', $paramArr['sf']);
+        }
+    
+        $stmt->setFetchMode(PDO::FETCH_ASSOC); //column으로 key가 매핑되게 가져오는 형식
+        $stmt->execute();
+        $row = $stmt->fetch();
+        return $row['cnt'];
+    }
+
 }
+
+

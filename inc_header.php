@@ -44,15 +44,26 @@
               aria-current="page">Home</a></li>
           <li class="nav-item"><a href="compnay.php"
               class="nav-link <?= ($menu_code == 'compnay') ? 'active' : ''; ?>">회사소개</a></li>
-          <li class="nav-item"><a href="mypage.php"
-              class="nav-link <?= ($menu_code == 'mypage') ? 'active' : ''; ?>">My page</a></li>
+          <?PHP
+          if ($ses_level == 10) {
+            ?>
+            <li class="nav-item"><a href="admin/index.php" class="nav-link <?= ($menu_code == 'mypage') ? 'active' : ''; ?>">관리자 페이지</a></li>
+          <?PHP
+          } else {
+            ?>
+                 <li class="nav-item"><a href="mypage.php" class="nav-link <?= ($menu_code == 'mypage') ? 'active' : ''; ?>">My
+                page</a></li>
+
+          <?PHP
+          }
+          ?>
           <li class="nav-item"><a href="board.php"
               class="nav-link <?= ($menu_code == 'board') ? 'active' : ''; ?>">게시판</a></li>
           <li class="nav-item"><a href="./pg/logout.php"
               class="nav-link  <?= ($menu_code == 'logout') ? 'active' : ''; ?>">로그아웃</a></li>
         </ul>
-      <?php
-      //로그인 안된 상태
+        <?php
+        //로그인 안된 상태
       } else {
         ?>
         <ul class="nav nav-pills">
@@ -68,7 +79,7 @@
               class="nav-link  <?= ($menu_code == 'login') ? 'active' : ''; ?>">로그인</a></li>
         </ul>
 
-      <?php
+        <?php
       }
       ?>
 

@@ -4,16 +4,14 @@ session_start();
 print_r($_SESSION);
 
 
-$ses_id = (isset($_SESSION ['ses_id']) && $_SESSION['ses_id'] != '') ? $_SESSION['ses_id'] : '';
-$ses_level = (isset($_SESSION ['ses_level']) && $_SESSION['ses_level'] != '') ? $_SESSION['ses_level'] : '';
+$ses_id = (isset($_SESSION['ses_id']) && $_SESSION['ses_id'] != '') ? $_SESSION['ses_id'] : '';
+$ses_level = (isset($_SESSION['ses_level']) && $_SESSION['ses_level'] != '') ? $_SESSION['ses_level'] : '';
 
 $g_title = '네카라쿠배';
-
 $js_array = ['js/home.js'];
 
-
 $menu_code = 'home';
-
+include 'inc_common.php';
 include 'inc_header.php';
 ?>
 
@@ -23,7 +21,7 @@ include 'inc_header.php';
     <img src="images/logo.svg" class="w-50" alt="">
     <div>
         <h3>Home 입니다.</h3>
- 
+
     </div>
 
 </main>
