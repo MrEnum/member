@@ -76,7 +76,9 @@ $memArr = $mem->list($page, $limit, $paramArr);
                     <?= $row['create_at']; ?>
                 </td>
                 <td><button class="btn btn-primary btn-sm">수정</button>
-                    <button class="btn btn-danger btn-sm">삭제</button>
+                    <button class="btn btn-danger btn-sm btn_mem_delete" data-idx="<?=$row['idx']?>">삭제</button>
+                    <!-- onclick으로 구현하는게 쉬운방법 이긴하나 
+                    요즘은 data-idx="<?=$row['idx']?>"-->
                 </td>
             </tr>
             <?php
