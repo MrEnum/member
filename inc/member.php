@@ -200,6 +200,18 @@ class Member
         return $row['cnt'];
     }
 
+
+    public function getAllData()
+    {
+        $sql = "SELECT * from member ORDER BY idx DESC"; //1페이지면 0
+        $stmt = $this->conn->prepare($sql);
+      
+        $stmt->setFetchMode(PDO::FETCH_ASSOC); //column으로 key가 매핑되게 가져오는 형식
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+
 }
 
 
