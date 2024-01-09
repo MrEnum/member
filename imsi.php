@@ -1,2 +1,5 @@
 <?php
-print_r($_SERVER);
+//a~ z
+//6자리
+
+$letter = range('a', 'z');
