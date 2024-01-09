@@ -16,7 +16,7 @@ class Board
         $sql = "SELECT 
                  idx, name, bcode, btype, cnt, DATE_FORMAT(create_at,'%Y-%m-%d %H:%i') create_at
                       from board_manage 
-                      ORDER BY idx ASC ";
+                    ";
         $stmt = $this->conn->prepare($sql);
         $stmt->setFetchMode(PDO::FETCH_ASSOC); //column으로 key가 매핑되게 가져오는 형식
         $stmt->execute();
@@ -35,6 +35,39 @@ class Board
         $stmt->execute();
 
     }
+    //게시판 idx로 게시판 정보 가져오기
+    public function getBcode($idx)
+    {
+        $sql = "SELECT bcode from board_manage where idx=:idx";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':idx', $idx);
+        $stmt->setFetchMode(PDO::FETCH_COLUMN, 0);
+        $stmt->execute();
+        return $row = $stmt->fetch();// $row['bcode']
+
+    }
+
+
+    //게시판 삭제
+    public function delete($idx)
+    {
+        //bcode
+        $bcode = $this->getBcode($idx);
+        //게시판 관리정보 삭제
+        $sql = 'DELETE FROM board_manage WHERE idx =:idx';
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':idx', $idx);
+        $stmt->execute();
+        //게시판 삭제
+        $sql = 'DELETE FROM board WHERE bcode =:bcode';
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':bcode', $bcode);
+        $stmt->execute();
+
+
+    }
+
 
     //게시판 코드 생성
     public function bcode_create()
@@ -47,4 +80,5 @@ class Board
         }
         return $bcode;
     }
+
 }

@@ -64,7 +64,10 @@ $boardArr = $board->list();
                 <td>
                     <?= $row['create_at']; ?>
                 </td>
-
+                <td><button class="btn btn-primary btn-sm btn_mem_edit" data-idx="<?=$row['idx']?>">수정</button>
+                    <button class="btn btn-danger btn-sm btn_mem_delete" data-idx="<?=$row['idx']?>">삭제</button>
+                    <!-- onclick으로 구현하는게 쉬운방법이긴하나 이 방법이 깔끔함-->
+                </td>
             </tr>
             <?php
         }

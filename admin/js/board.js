@@ -23,14 +23,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (data.result == 'mode_empty') {
                     alert('Mode 값이 누락되었습니다.');
                     return false;
-                }else if(data.result == 'title_empty'){
+                } else if (data.result == 'title_empty') {
                     alert('게시판 이름이 누락되었습니다.');
                     board_title.focus();
                     return false;
-                }else if(data.result == 'btype_empty'){
+                } else if (data.result == 'btype_empty') {
                     alert('게시판 타입이 누락되었습니다.');
                     return false;
-                }else if(data.result == 'success'){
+                } else if (data.result == 'success') {
                     alert('게시판이 생성되었습니다.');
                     self.location.reload();
                     return false;
@@ -49,4 +49,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
         board_title.value = ''
     })
+
+    //삭제버튼 클릭
+    const btn_mem_delete = document.querySelectorAll(".btn_mem_delete")
+    btn_mem_delete.forEach((box) => {
+        box.addEventListener("click", () => {
+
+            if (!confirm('본 게시판을 삭제하시겟습니까?')) {
+                return false;
+            }
+            const idx = box.dataset.idx;
+            const xhr = new XMLHttpRequest();
+            const f = new FormData()
+            f.append('idx', idx);
+            f.append('mode', "delete");
+
+
+            xhr.open("POST", "./pg/board_process.php", true);
+            xhr.send(f);
+            xhr.onload = () => {
+                if (xhr.status == 200) {
+                    const data = JSON.parse(xhr.responseText)
+                    if (data.result = 'success') {
+                        alert('게시판이 삭제 되었습니다.');
+                        self.location.reload();
+                    }
+                } else {
+                    alert('통신 실패');
+                }
+            }
+        })
+    })
+
+
 })

@@ -7,6 +7,7 @@ include '../../inc/board.php';  //게시판 클래스
 $board_title = (isset($_POST['board_title']) && $_POST['board_title'] != '') ? $_POST['board_title'] : '';
 $board_type = (isset($_POST['board_type']) && $_POST['board_type'] != '') ? $_POST['board_type'] : '';
 $mode = (isset($_POST['mode']) && $_POST['mode'] != '') ? $_POST['mode'] : '';
+$idx = (isset($_POST['idx']) && $_POST['idx'] != '') ? $_POST['idx'] : '';
 
 if ($mode == '') {
     $arr = ["result" => "mode_empty"];
@@ -38,6 +39,12 @@ if ($mode == 'input') {
         'bcode' => $bcode,
     ];
     $board->create($arr);
+    $arr = ["result" => "success"];
+    die(json_encode($arr));
+    
+} else if ($mode == "delete") {
+    //게시판 삭제
+    $board->delete($idx);
     $arr = ["result" => "success"];
     die(json_encode($arr));
 }
