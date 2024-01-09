@@ -22,5 +22,29 @@ class Board
         $stmt->execute();
         return $stmt->fetchAll();
     }
+    //게시판 생성
+    public function create($arr)
+    {
+        $sql = "INSERT INTO board_manage(name, bcode, btype, create_at) 
+        values(:name, :bcode, :btype, NOW())";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(":name", $arr['name']);
+        $stmt->bindParam(":bcode", $arr['bcode']);
+        $stmt->bindParam(":btype", $arr['btype']);
 
+        $stmt->execute();
+
+    }
+
+    //게시판 코드 생성
+    public function bcode_create()
+    {
+        $letter = range('a', 'z');
+        $bcode = '';
+        for ($i = 0; $i < 6; $i++) {
+            $r = rand(0, 25);
+            $bcode .= $letter[$r];
+        }
+        return $bcode;
+    }
 }
