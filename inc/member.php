@@ -100,6 +100,19 @@ class Member
         die('<script>self.location.href="../index.php";</script>');
     }
 
+    public function getInfoFromIdx($idx)
+    {
+        $sql = "SELECT * FROM member WHERE  idx=:idx";
+        $stmt = $this->conn->prepare($sql); //db커넥션 세팅
+        $stmt->bindParam(":idx", $idx);       //파라미터 바인딩
+        $stmt->setFetchMode(PDO::FETCH_ASSOC); //index값 말고 필드명으로만 나오게끔
+
+        $stmt->execute();
+        return $stmt->fetch();
+    }
+
+
+
     public function getInfo($id)
     {
         $sql = "SELECT * FROM member WHERE  id=:id";
@@ -124,13 +137,14 @@ class Member
                 photo   =:photo";
 
         $params = [
-            ":id" => $marray['id'],
+
             ":name" => $marray['name'],
             ":email" => $marray['email'],
             ":zipcode" => $marray['zipcode'],
             ":addr1" => $marray['addr1'],
             ":addr2" => $marray['addr2'],
             ":photo" => $marray['photo']
+
         ];
         if ($marray["password"] != '') {
             //단방향 암호화
@@ -139,12 +153,21 @@ class Member
             $params[':password'] = $new_hash_password;
 
         }
-        $sql .= " WHERE id=:id";
+        if ($_SESSION['ses_level'] == 10 && isset($marray['idx']) && $marray['idx'] != '') {
+            $params[':level'] = $marray['level'];
+            $params[':idx'] = $marray['idx'];
+            $sql .= ", level=:level";
+            $sql .= " WHERE idx=:idx";
+        } else {
+            $params[':id'] = $marray['id'];
+            $sql .= " WHERE id=:id";
+        }
+
         print_r($sql);
         $stmt = $this->conn->prepare($sql);
         $stmt->execute($params);
-        //프로필 이미지를 업데이트 했다면
     }
+
     //리스트
     public function list($page, $limit, $paramArr)
     {
@@ -180,6 +203,7 @@ class Member
         return $stmt->fetchAll();
     }
 
+    //리스트 갯수 조회
     public function total($paramArr)
     {
         $where = '';
@@ -212,7 +236,7 @@ class Member
         return $row['cnt'];
     }
 
-
+    //회원전체 조회
     public function getAllData()
     {
         $sql = "SELECT * from member ORDER BY idx DESC"; //1페이지면 0
@@ -223,16 +247,33 @@ class Member
         return $stmt->fetchAll();
     }
 
-
+    //회원삭제
     public function member_del($idx)
     {
         $sql = "DELETE FROM member WHERE idx=:idx";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(":idx", $idx);
-        $stmt->execute(); 
+        $stmt->execute();
+    }
+
+    //프로필 이미지 업로드
+    public function profile_upload($id, $new_photo, $old_photo = '')
+    {
+        //이미지 update 시 삭제
+        if ($old_photo != '') {
+            echo'<script> alert("원래 사진이 있으면 지워죠.");</script>';
+            unlink(PROFILE_DIR . "/". $old_photo);
+        }
+
+        //profile image 처리
+        $temparr = explode('.', $new_photo['name']);    // ['2','jpg']
+        $ext = end($temparr);    // ['2','jpg']
+        $photo = $id . '.' . $ext;
+        $old_photo = $photo;
+        copy($new_photo['tmp_name'], PROFILE_DIR . "/" . $photo);
+        echo'<script> alert("사진저장완료");</script>';
+        return $photo;
     }
 
 
 }
-
-

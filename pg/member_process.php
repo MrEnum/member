@@ -11,6 +11,8 @@ $name = (isset($_POST['name']) && $_POST['name'] != '') ? $_POST['name'] : '';
 $zipcode = (isset($_POST['zipcode']) && $_POST['zipcode'] != '') ? $_POST['zipcode'] : '';
 $addr1 = (isset($_POST['addr1']) && $_POST['addr1'] != '') ? $_POST['addr1'] : '';
 $addr2 = (isset($_POST['addr2']) && $_POST['addr2'] != '') ? $_POST['addr2'] : '';
+$old_photo = (isset($_POST['old_photo']) && $_POST['old_photo'] != '') ? $_POST['old_photo'] : '';
+
 
 $mode = (isset($_POST['mode']) && $_POST['mode'] != '') ? $_POST['mode'] : '';
 
@@ -78,22 +80,12 @@ if ($mode == 'id_chk') {
     self.location.href='../member_success.php'
     </script>";
 } else if ($mode == "edit") {
-    
-    $first_photo = (isset($_POST['first_photo']) && $_POST['first_photo'] != '') ? $_POST['first_photo'] : '';
-    $photo ='';
+    echo'<script> alert("여긴 수정모드");</script>';
+    $photo = '';
     if (isset($_FILES['photo']) && $_FILES['photo']['name'] != '') {
-
-        //이미지 update 시 삭제
-        if ($first_photo != '') {
-            unlink("../data/profile/" . $first_photo);
-        }
-
-        //profile image 처리
-        $temparr = explode('.', $_FILES['photo']['name']);    // ['2','jpg']
-        $ext = end($temparr);    // ['2','jpg']
-        $photo = $id . '.' . $ext;
-
-        copy($_FILES['photo']['tmp_name'], "../data/profile/" . $photo);
+        echo'<script> alert("여긴사진바꾸는곳");</script>';
+        $new_photo = $_FILES['photo'];
+        $old_photo = $mem->profile_upload($id, $new_photo, $old_photo);
     }
     session_start();
     $arr = [
@@ -104,7 +96,7 @@ if ($mode == 'id_chk') {
         'zipcode' => $zipcode,
         'addr1' => $addr1,
         'addr2' => $addr2,
-        'photo' => $first_photo
+        'photo' => $old_photo
     ];
     $mem->edit($arr);
 

@@ -23,6 +23,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     })
 
+    //수정 버튼
+    const btn_mem_edit = document.querySelectorAll(".btn_mem_edit");
+    btn_mem_edit.forEach((box) => {
+        box.addEventListener("click", () => {
+            const idx = box.dataset.idx;
+            self.location.href = './member_edit.php?idx='+ idx;
+        })
+
+    })
+
     //삭제 버튼
     const btn_mem_deletes = document.querySelectorAll(".btn_mem_delete")
     btn_mem_deletes.forEach((box) => {
@@ -33,15 +43,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 const f = new FormData();
                 f.append("idx", idx)
 
-                xhr.open("POST", "./member_del.php","true");
+                xhr.open("POST", "./member_del.php", "true");
                 xhr.send(f);
-                xhr.onload = () =>{
-                    const data =JSON.parse(xhr.responseText)
-                    if(xhr.status == 200){
-                       if(data.result == 'success'){
-                        self.location.reload();
-                       }
-                    }else{
+                xhr.onload = () => {
+                    const data = JSON.parse(xhr.responseText)
+                    if (xhr.status == 200) {
+                        if (data.result == 'success') {
+                            self.location.reload();
+                        }
+                    } else {
                         alert('통신 실패');
                     }
                 }

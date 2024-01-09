@@ -41,7 +41,7 @@ include 'inc_header.php';
         <input type="hidden" name="mode" value="edit">
         <input type="hidden" name="first_email" value="<?= $memArr['email']; ?>">
         <input type="hidden" name="email_chk" value="0">
-        <input type="hidden" name="first_photo" value="<?= $memArr['photo']; ?>">
+        <input type="hidden" name="old_photo" value="<?= $memArr['photo']; ?>">
         <div class="d-flex gap-2 align-items-end"> <!-- dispaly flex -->
             <div class="flex-grow-1">
                 <label for="f_id" class="form-label">아이디</label>
