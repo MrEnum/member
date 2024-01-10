@@ -64,8 +64,9 @@ $boardArr = $board->list();
                 <td>
                     <?= $row['create_at']; ?>
                 </td>
-                <td><button class="btn btn-primary btn-sm btn_mem_edit" data-idx="<?=$row['idx']?>">수정</button>
-                    <button class="btn btn-danger btn-sm btn_mem_delete" data-idx="<?=$row['idx']?>">삭제</button>
+                <td><button class="btn btn-primary btn-sm btn_mem_edit" data-idx="<?= $row['idx'] ?>" data-bs-toggle="modal"
+                        data-bs-target="#board_create_modal">수정</button>
+                    <button class="btn btn-danger btn-sm btn_mem_delete" data-idx="<?= $row['idx'] ?>">삭제</button>
                     <!-- onclick으로 구현하는게 쉬운방법이긴하나 이 방법이 깔끔함-->
                 </td>
             </tr>
@@ -85,7 +86,7 @@ $boardArr = $board->list();
     </div> -->
 
     <div class="d-flex mt-3 justify-content-between align-items-start">
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#board_create_modal">게시판 생성</button>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#board_create_modal" id="create_modal_open">게시판 생성</button>
     </div>
 </main>
 <!-- Modal -->
@@ -93,7 +94,10 @@ $boardArr = $board->list();
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">게시판 생성</h1>
+                <h1 class="modal-title fs-5" id="modalTitle">게시판 생성</h1>
+                <input type="hidden" class="" name="mode" id="board_mode">
+                <input type="hidden" class="" name="idx" id="board_idx">
+
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body d-flex gab-2">

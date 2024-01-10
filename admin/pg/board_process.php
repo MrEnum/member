@@ -41,10 +41,40 @@ if ($mode == 'input') {
     $board->create($arr);
     $arr = ["result" => "success"];
     die(json_encode($arr));
-    
+
 } else if ($mode == "delete") {
     //게시판 삭제
     $board->delete($idx);
     $arr = ["result" => "success"];
+    die(json_encode($arr));
+
+} else if ($mode == "edit") {
+    //게시판 수정
+    if ($idx == '') {
+        $arr = ["result" => "empty_idx"];
+        die(json_encode($arr));
+    }
+    if ($board_title == '') {
+        $arr = ["result" => "title_empty"];
+        die(json_encode($arr));
+    }
+
+    $arr = [
+        'name' => $board_title,
+        'btype' => $board_type,
+        'idx' => $idx,
+    ];
+     $board->update($arr);
+     $arr = ["result" => "edit_success"];
+
+} else if ($mode == "getInfo") {
+    //게시판 정보 조회
+    if ($idx == '') {
+        $arr = ["result" => "empty_idx"];
+        die(json_encode($arr));
+    }
+    $row = $board->getInfo($idx);
+
+    $arr = ["result" => "success", "list" => $row];
     die(json_encode($arr));
 }
