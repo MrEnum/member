@@ -35,6 +35,19 @@ class Board
         $stmt->execute();
 
     }
+
+       //게시판 수정
+       public function update($arr)
+       {
+           $sql = "UPDATE  board_manage SET name=:name, btype=:btype WHERE idx=:idx";
+           $stmt = $this->conn->prepare($sql);
+           $stmt->bindParam(":name", $arr['name']);
+           $stmt->bindParam(":btype", $arr['btype']);
+           $stmt->bindParam(":idx", $arr['idx']);
+   
+           $stmt->execute();
+   
+       }
     //게시판 idx로 게시판 정보 가져오기
     public function getBcode($idx)
     {
@@ -80,5 +93,16 @@ class Board
         }
         return $bcode;
     }
+
+      //게시판 정보 불러오기
+      public function getInfo($idx)
+      {
+          $sql = "SELECT * from board_manage WHERE idx=:idx";
+          $stmt = $this->conn->prepare($sql);
+          $stmt->bindValue(':idx', $idx);
+          $stmt->execute();
+          $stmt->setFetchMode(PDO::FETCH_ASSOC); //column으로 key가 매핑되게 가져오는 형식
+          return $stmt->fetch();
+      }
 
 }
