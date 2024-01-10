@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
         board_mode.value = 'input';
         document.querySelector("#modalTitle").textContent = '게시판 생성'
     })
-
+   
 
     //수정버튼 클릭
     const btn_mem_edit = document.querySelectorAll(".btn_mem_edit");
