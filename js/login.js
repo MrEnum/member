@@ -17,7 +17,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
             return false
         }
         //ajax
-
         const xhr = new XMLHttpRequest()
         xhr.open("POST", "./pg/login_process.php", "true")
 
@@ -49,18 +48,3 @@ document.addEventListener("DOMContentLoaded", function (e) {
     });
 
 });
-
-        // const xhr = new XMLHttpRequest()
-        // xhr.open("POST", "./pg/login_process.php", "true")
-
-        const f1 = new FormData()
-        f1.append("id", f_id.value)
-        f1.append("pw", f_pw.value)
-
-        // xhr.send(f1)
-
-        // xhr.onload = () => {
-        //     alert(xhr.status)
-        // }
-
-
