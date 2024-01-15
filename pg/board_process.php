@@ -32,7 +32,6 @@ if ($mode == "input") {
     preg_match_all("/<img[^>]*src=[\"']?([^>\"']+)[\"']?[^>]*>/i", $content, $matches);
 
 
-    //data:image/png;base64, ivckksocooccksockckkcosAAiaDFKLVIDkls
     $img_array = [];
     // echo '<script>alert("뽀이치 들어가기 직전");</script>';
     foreach ($matches[1] as $key => $row) {
@@ -43,13 +42,13 @@ if ($mode == "input") {
         list($type, $data) = explode(';', $row);
         list(, $data) = explode(',', $data);
         $data = base64_decode($data);
-        list(,$ext) = explode('/', $type);
+        list(, $ext) = explode('/', $type);
         $ext = ($ext == 'jpeg') ? 'jpg' : $ext;
 
         $filename = date('YmdHis') . '_' . $key . "." . $ext;
         file_put_contents(BOARD_DIR . '/' . $filename, $data);
 
-        $content = str_replace($row, BOARD_WEB_DIR."/". $filename, $content);
+        $content = str_replace($row, BOARD_WEB_DIR . "/" . $filename, $content);
         $img_array[] = BOARD_WEB_DIR . '/' . $filename;
     }
 
@@ -61,6 +60,20 @@ if ($mode == "input") {
         die(json_encode(["result" => "empty_content"]));
     }
 
+    // 파일첨부
+    //$_FILES[]
+    if (isset($_FILES['files']) && $_FILES['files']['name'] != '') {
+        $tmparr = explode('.', $_FILES['files']['name']);
+        $ext = end($tmparr);
+        $flag = rand(1000, 9999);
+        $filename = 'a' . date('YmdHis') . '_' . $flag . '.' . $ext;
+        $file_ori = $_FILES['files']['name'];
+
+        copy($_FILES['files']['tmp_name'], BOARD_DIR."/".$filename);
+
+        $full_str = $filename . '|' . $file_ori;
+
+    }
 
     $memArr = $member->getInfo($ses_id);
     $arr = [
@@ -69,6 +82,7 @@ if ($mode == "input") {
         'name' => $memArr['name'],
         'subject' => $subject,
         'content' => $content,
+        'files' => $full_str,
         'ip' => $_SERVER['REMOTE_ADDR']
     ];
 

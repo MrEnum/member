@@ -35,8 +35,11 @@ document.addEventListener("DOMContentLoaded", () => {
             return false;
         }
 
+        // 파일 첨부
+        const id_attach = document.querySelector("#id_attach");
+        const file = id_attach.files[0];
+
         //
-        alert("js는 탄거같은디?");
         const params = getUrlParams();
        
         const f = new FormData();
@@ -44,7 +47,9 @@ document.addEventListener("DOMContentLoaded", () => {
         f.append("content", markupStr)          //게시글 내용
         f.append("bcode", params['bcode']);     //게시판 코드
         f.append("mode", "input");              //모드 : 글등록
-        alert("js는 탄거같은디?2");
+        f.append("files", file)                 //파일첨부
+
+        
         const xhr = new XMLHttpRequest();
         xhr.open("post", "./pg/board_process.php", "true");
         

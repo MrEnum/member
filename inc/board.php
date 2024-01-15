@@ -13,16 +13,18 @@ class Board
     //글등록
     public function input($arr)
     {
-        $sql = "INSERT into board(bcode, id, name, subject, content, ip, create_at) 
-                value (:bcode, :id, :name, :subject, :content, :ip, NOW())";
+        $sql = "INSERT into board(bcode, id, name, subject, content, files, ip, create_at) 
+                value (:bcode, :id, :name, :subject, :content, :files, :ip, NOW())";
         $stmt = $this->conn->prepare($sql); //db커넥션 세팅
-        $stmt->bindParam(":bcode", $arr['bcode']);       //파라미터 바인딩
-        $stmt->bindParam(":id", $arr['id']);       //파라미터 바인딩
-        $stmt->bindParam(":name", $arr['name']);       //파라미터 바인딩
+        $stmt->bindParam(":bcode", $arr['bcode']);       
+        $stmt->bindParam(":id", $arr['id']);       
+        $stmt->bindParam(":name", $arr['name']);       
 
-        $stmt->bindParam(":subject", $arr['subject']);       //파라미터 바인딩
-        $stmt->bindParam(":content", $arr['content']);       //파라미터 바인딩
-        $stmt->bindParam(":ip", $arr['ip']);       //파라미터 바인딩
+        $stmt->bindParam(":subject", $arr['subject']);      
+        $stmt->bindParam(":content", $arr['content']);       
+        $stmt->bindParam(":files", $arr['files']);       
+
+        $stmt->bindParam(":ip", $arr['ip']);       
 
         $stmt->execute();
         $stmt->setFetchMode(PDO::FETCH_ASSOC); //index값 말고 필드명으로만 나오게끔F
