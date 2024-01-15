@@ -2,7 +2,7 @@
 session_start();
 include '../inc_common.php';
 include '../../inc/dbconfig.php';
-include '../../inc/board.php';  //게시판 클래스
+include '../../inc/boardmanage.php';  //게시판 클래스
 
 $board_title = (isset($_POST['board_title']) && $_POST['board_title'] != '') ? $_POST['board_title'] : '';
 $board_type = (isset($_POST['board_type']) && $_POST['board_type'] != '') ? $_POST['board_type'] : '';
@@ -15,7 +15,7 @@ if ($mode == '') {
 }
 
 
-$board = new Board($db);
+$board = new BoardManage($db);
 
 //게시판 생성 
 if ($mode == 'input') {
@@ -66,6 +66,7 @@ if ($mode == 'input') {
     ];
      $board->update($arr);
      $arr = ["result" => "edit_success"];
+     die(json_encode($arr));
 
 } else if ($mode == "getInfo") {
     //게시판 정보 조회

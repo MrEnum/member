@@ -7,20 +7,20 @@ $ses_id = (isset($_SESSION['ses_id']) && $_SESSION['ses_id'] != '') ? $_SESSION[
 $ses_level = (isset($_SESSION['ses_level']) && $_SESSION['ses_level'] != '') ? $_SESSION['ses_level'] : '';
 
 $g_title = '네카라쿠배';
-$js_array = ['js/board.js'];
+$js_array = ['js/boardmanage.js'];
 
-$menu_code = 'board';
+$menu_code = 'boardmanage';
 include 'inc_common.php';
 include 'inc_header.php';
 include '../inc/dbconfig.php';
-include '../inc/board.php'; //게시판관리 class
+include '../inc/boardmanage.php'; //게시판관리 class
 // include '../inc/lib.php'; //페이지네이션
 
 
 $sn = (isset($_GET['sn']) && $_GET['sn'] != '' && is_numeric($_GET['sn'])) ? $_GET['sn'] : '';
 $sf = (isset($_GET['sf']) && $_GET['sf'] != '') ? $_GET['sf'] : '';
 
-$board = new Board($db);
+$board = new BoardManage($db);
 $boardArr = $board->list();
 ?>
 
@@ -64,7 +64,9 @@ $boardArr = $board->list();
                 <td>
                     <?= $row['create_at']; ?>
                 </td>
-                <td><button class="btn btn-primary btn-sm btn_mem_edit" data-idx="<?= $row['idx'] ?>" data-bs-toggle="modal"
+                <td>
+                <button class="btn btn-success btn-sm btn_board_view" data-idx="<?= $row['idx'] ?>">보기</button>    
+                <button class="btn btn-primary btn-sm btn_mem_edit" data-idx="<?= $row['idx'] ?>" data-bs-toggle="modal"
                         data-bs-target="#board_create_modal">수정</button>
                     <button class="btn btn-danger btn-sm btn_mem_delete" data-idx="<?= $row['idx'] ?>">삭제</button>
                     <!-- onclick으로 구현하는게 쉬운방법이긴하나 이 방법이 깔끔함-->
@@ -74,18 +76,8 @@ $boardArr = $board->list();
         }
         ?>
     </table>
-    <!-- <div class="container mt-3 d-flex gab-2 w-50">
-        <select class="form-select w-25" name="sn" id="sn">
-            <option value="1">이름</option>
-            <option value="2">아이디</option>
-            <option value="3">이메일</option>
-        </select>
-        <input type="text" class="form-control w-25" id="sf" name="sf">
-        <button class="btn btn-primary" id="btn_search">검색</button>
-        <button class="btn btn-success" id="btn_all">전체목록</button>
-    </div> -->
 
-    <div class="d-flex mt-3 justify-content-between align-items-start">
+    <div class="d-flex mt-3 justify-content-between align-items -start">
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#board_create_modal" id="create_modal_open">게시판 생성</button>
     </div>
 </main>

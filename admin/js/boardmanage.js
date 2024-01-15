@@ -7,7 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (board_title.value == "") {
             alert('게시판 이름을 입력해 주세요.')
             board_title.focus();
-            return false;
+            return false; 
+            
         }
 
         btn_board_create.disabled = true;
@@ -21,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
         f.append('idx', document.querySelector("#board_idx").value);
 
 
-        xhr.open("POST", "./pg/board_process.php", true);
+        xhr.open("POST", "./pg/boardmanage_process.php", true);
         xhr.send(f)
         xhr.onload = () => {
             if (xhr.status == 200) {
@@ -84,7 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const xhr = new XMLHttpRequest();
 
-            xhr.open("POST", "./pg/board_process.php", true);
+            xhr.open("POST", "./pg/boardmanage_process.php", true);
             xhr.send(f);
             xhr.onload = () => {
                 if (xhr.status == 200) {
@@ -100,11 +101,19 @@ document.addEventListener("DOMContentLoaded", () => {
                         board_idx.value = idx;
                     }
                 } else {
-                    alert('수정 실패');
+                    alert('정보불러오기 실패');
                 }
             }
         })
     })
+    // 해당 게시판으로 이동
+    const btn_board_view = document.querySelectorAll(".btn_board_view");
+    btn_board_view.forEach((box)=> {
+        box.addEventListener("click", ()=>{
+            self.location.href="../board.php?bcode=" + box.dataset.bcode;
+        })
+    })
+
 
     //삭제버튼 클릭
     const btn_mem_delete = document.querySelectorAll(".btn_mem_delete")
@@ -121,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
             f.append('mode', "delete");
 
 
-            xhr.open("POST", "./pg/board_process.php", true);
+            xhr.open("POST", "./pg/boardmanage_process.php", true);
             xhr.send(f);
             xhr.onload = () => {
                 if (xhr.status == 200) {

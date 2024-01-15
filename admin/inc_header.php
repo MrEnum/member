@@ -37,7 +37,7 @@
       <ul class="nav nav-pills">
         <li class="nav-item"><a href="index.php"    class="nav-link <?= ($menu_code == 'home') ? 'active' : ''; ?>" aria-current="page">Home</a></li>
         <li class="nav-item"><a href="member.php"  class="nav-link <?= ($menu_code == 'member') ? 'active' : ''; ?>">회원관리</a></li>
-        <li class="nav-item"><a href="board.php"    class="nav-link <?= ($menu_code == 'board') ? 'active' : ''; ?>">게시판관리</a></li>
+        <li class="nav-item"><a href="boardmanage.php"    class="nav-link <?= ($menu_code == 'boardmanage') ? 'active' : ''; ?>">게시판관리</a></li>
         <li class="nav-item"><a href="mypage.php"   class="nav-link <?= ($menu_code == 'mypage') ? 'active' : ''; ?>">관리자 페이지</a></li>
         <li class="nav-item"><a href="../pg/logout.php" class="nav-link  <?= ($menu_code == 'logout') ? 'active' : ''; ?>">로그아웃</a></li>
       </ul>

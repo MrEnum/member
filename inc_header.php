@@ -47,16 +47,27 @@
           <?PHP
           if ($ses_level == 10) {
             ?>
-            <li class="nav-item"><a href="admin/index.php" class="nav-link <?= ($menu_code == 'mypage') ? 'active' : ''; ?>">관리자 페이지</a></li>
-          <?PHP
+            <li class="nav-item"><a href="admin/index.php"
+                class="nav-link <?= ($menu_code == 'mypage') ? 'active' : ''; ?>">관리자 페이지</a></li>
+            <?PHP
           } else {
             ?>
-                 <li class="nav-item"><a href="mypage.php" class="nav-link <?= ($menu_code == 'mypage') ? 'active' : ''; ?>">My
+            <li class="nav-item"><a href="mypage.php" class="nav-link <?= ($menu_code == 'mypage') ? 'active' : ''; ?>">My
                 page</a></li>
 
-          <?PHP
+            <?PHP
           }
           ?>
+          <?PHP
+          foreach ($boardArr as $row) {
+            echo '<li class="nav-item"><a href="board.php?bcode=' . $row["bcode"] . '" class="nav-link';
+            if (isset($_GET['bcode']) && $_GET['bcode'] == $row['bcode']) {
+              echo ' active';
+            }
+            echo '" >' . $row['name'] . '</a></li>';
+          }
+          ?>
+
           <li class="nav-item"><a href="board.php"
               class="nav-link <?= ($menu_code == 'board') ? 'active' : ''; ?>">게시판</a></li>
           <li class="nav-item"><a href="./pg/logout.php"
