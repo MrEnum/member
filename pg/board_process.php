@@ -63,23 +63,34 @@ if ($mode == "input") {
     // 파일첨부
     //$_FILES[]
     if (isset($_FILES['files']) && $_FILES['files']['name'] != '') {
-        $tmparr = explode('.', $_FILES['files']['name']);
-        $ext = end($tmparr);
-        $flag = rand(1000, 9999);
-        $filename = 'a' . date('YmdHis') . '_' . $flag . '.' . $ext;
-        $file_ori = $_FILES['files']['name'];
 
-        copy($_FILES['files']['tmp_name'], BOARD_DIR."/".$filename);
+        $tmp_arr = [];
+        foreach ($_FILES['files']['name'] as $key => $value) {
+            $_FILES['files']['name'][$key];
 
-        $full_str = $filename . '|' . $file_ori;
+            $tmp_arr = explode('.', $_FILES['files']['name'][$key]);
+            $ext = end($tmp_arr);
+            $flag = rand(1000, 9999);
+            $filename = 'a' . date('YmdHis') . $flag . '.' . $ext;
+            $file_ori = $_FILES['files']['name'];
+
+            copy($_FILES['files']['tmp_name'][$key], BOARD_DIR . "/" . $filename);
+
+            $full_str = $filename . '|' . $file_ori;
+            $tmp_arr[] = $full_str;
+        }
+        $tmp = implode('?', $tmp_arr);
 
     }
+    echo $tmp;
+    exit;
 
     $memArr = $member->getInfo($ses_id);
+    $name = $memArr['name'];
     $arr = [
         'bcode' => $bcode,
         'id' => $ses_id,
-        'name' => $memArr['name'],
+        'name' => $name,
         'subject' => $subject,
         'content' => $content,
         'files' => $full_str,
