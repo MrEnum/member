@@ -1,4 +1,14 @@
 <?php
+$err_array = error_get_last();
+$a = (int) ini_get('post_max_size');
+
+
+if(isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > (int) ini_get('post_max_size') * 1024*1024){
+    $arr = ['result' => 'post_size_exceed'];
+    die(json_encode($arr));
+}
+
+
 include '../inc/dbconfig.php';
 include '../inc/board.php'; //게시판 class
 include '../inc/member.php'; //회원 class
@@ -63,27 +73,26 @@ if ($mode == "input") {
     // 파일첨부
     //$_FILES[]
     if (isset($_FILES['files']) && $_FILES['files']['name'] != '') {
-
+       if(sizeof($_FILES['files']['name']) > 3){
+        $arr = ["result" => "file_upload_count_exceed"];
         $tmp_arr = [];
-        foreach ($_FILES['files']['name'] as $key => $value) {
-            $_FILES['files']['name'][$key];
+            foreach ($_FILES['files']['name'] as $key => $val) {
+                $full_str ='';
 
-            $tmp_arr = explode('.', $_FILES['files']['name'][$key]);
-            $ext = end($tmp_arr);
-            $flag = rand(1000, 9999);
-            $filename = 'a' . date('YmdHis') . $flag . '.' . $ext;
-            $file_ori = $_FILES['files']['name'];
+                $tmparr = explode('.', $_FILES['files']['name'][$key]);
+                $ext = end($tmparr);
+                $flag = rand(1000, 9999);
+                $filename = 'a' . date('YmdHis') . $flag . '.' . $ext;
+                $file_ori = $_FILES['files']['name'][$key];
 
-            copy($_FILES['files']['tmp_name'][$key], BOARD_DIR . "/" . $filename);
+                copy($_FILES['files']['tmp_name'][$key], BOARD_DIR . "/" . $filename);
 
-            $full_str = $filename . '|' . $file_ori;
-            $tmp_arr[] = $full_str;
-        }
-        $tmp = implode('?', $tmp_arr);
-
-    }
-    echo $tmp;
-    exit;
+                $full_str = $filename . '|' . $file_ori;
+                $tmp_arr[] = $full_str;
+            }
+        $file_list_str = implode('?', $tmp_arr);
+       }
+    
 
     $memArr = $member->getInfo($ses_id);
     $name = $memArr['name'];
@@ -93,7 +102,7 @@ if ($mode == "input") {
         'name' => $name,
         'subject' => $subject,
         'content' => $content,
-        'files' => $full_str,
+        'files' => $file_list_str,
         'ip' => $_SERVER['REMOTE_ADDR']
     ];
 
