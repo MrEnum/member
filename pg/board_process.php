@@ -3,7 +3,7 @@ $err_array = error_get_last();
 $a = (int) ini_get('post_max_size');
 
 
-if(isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > (int) ini_get('post_max_size') * 1024*1024){
+if (isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > (int) ini_get('post_max_size') * 1024 * 1024) {
     $arr = ['result' => 'post_size_exceed'];
     die(json_encode($arr));
 }
@@ -73,26 +73,36 @@ if ($mode == "input") {
     // 파일첨부
     //$_FILES[]
     if (isset($_FILES['files']) && $_FILES['files']['name'] != '') {
-       if(sizeof($_FILES['files']['name']) > 3){
-        $arr = ["result" => "file_upload_count_exceed"];
+        if (sizeof($_FILES['files']['name']) > 3) {
+            $arr = ["result" => "file_upload_count_exceed"];
+        }
         $tmp_arr = [];
-            foreach ($_FILES['files']['name'] as $key => $val) {
-                $full_str ='';
+        foreach ($_FILES['files']['name'] as $key => $val) {
+            $full_str = '';
 
-                $tmparr = explode('.', $_FILES['files']['name'][$key]);
-                $ext = end($tmparr);
-                $flag = rand(1000, 9999);
-                $filename = 'a' . date('YmdHis') . $flag . '.' . $ext;
-                $file_ori = $_FILES['files']['name'][$key];
+            $tmparr = explode('.', $_FILES['files']['name'][$key]);
+            $ext = end($tmparr);
 
-                copy($_FILES['files']['tmp_name'][$key], BOARD_DIR . "/" . $filename);
+            $not_arrowed_file_ext = ['txt', 'exe', 'xls'];
 
-                $full_str = $filename . '|' . $file_ori;
-                $tmp_arr[] = $full_str;
+            if (in_array($ext, $not_arrowed_file_ext)) {
+                $arr = ['result' => 'not_allowed_file'];
+                die(json_encode($arr));
             }
+
+
+            $flag = rand(1000, 9999);
+            $filename = 'a' . date('YmdHis') . $flag . '.' . $ext;
+            $file_ori = $_FILES['files']['name'][$key];
+
+            copy($_FILES['files']['tmp_name'][$key], BOARD_DIR . "/" . $filename);
+
+            $full_str = $filename . '|' . $file_ori;
+            $tmp_arr[] = $full_str;
+        }
         $file_list_str = implode('?', $tmp_arr);
-       }
-    
+    }
+
 
     $memArr = $member->getInfo($ses_id);
     $name = $memArr['name'];

@@ -6,7 +6,7 @@ include 'inc/common.php';
 //게시판 목록
 include 'inc/boardmanage.php';
 $boardm = new BoardManage($db);
-$boardArr = $boardm -> list();
+$boardArr = $boardm->list();
 
 $bcode = (isset($_GET['bcode']) && $_GET['bcode'] != '') ? $_GET['bcode'] : '';
 
@@ -20,9 +20,7 @@ $g_title = '게시판 글쓰기';
 include_once 'inc_header.php';
 ?>
 
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-    crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 
@@ -37,7 +35,7 @@ include_once 'inc_header.php';
 
     </div>
 
-    <div  class="mt-3 d-flex gap-2 justify-content-end">
+    <div class="mt-3 d-flex gap-2 justify-content-end">
         <button class="btn btn-primary" id="btn_write_submit">확인</button>
         <button class="btn btn-secondary" id="btn_board_list">목록</button>
     </div>

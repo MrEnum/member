@@ -9,6 +9,13 @@ function getUrlParams() {
     return params;
 }
 
+//substring(시작위치, 끝위치)
+function getExtensionOfFilename(filename) {
+    const filelen = filename.length; //문자열의 길이
+    const lastdot = filename.lastIndexOf('.');
+    return filename.substring(lastdot, filelen).toLowerCase();
+}
+
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -55,6 +62,18 @@ document.addEventListener("DOMContentLoaded", () => {
         f.append("mode", "input");              //모드 : 글등록
         // f.append("files", file)                 //파일첨부
         for (const file of id_attach.files) {
+            if (file.size > 40 * 1024 * 1024) {
+                alert("파일 용량이 40메가보다 큰 파일이 첨부되었습니다. 확인 바랍니다.");
+                id_attach.value = '';
+                return false;
+            }
+            ext = getExtensionOfFilename(file.name);
+            if(ext =='txt' || ext == 'ext' || ext=='xls'){
+                alert('첨부할 수 없는 포맷의 파일이 첨부되었습니다.(exe, txt ..');
+                id_attach.value = '';
+                return false;
+            }
+
             f.append("files[]", file);
         }
 
@@ -69,14 +88,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (data.result == "success") {
                     alert("등록 완료");
                     self.location.href = './board.php?bcode=' + params['bcode']
-                }else if(data.result =='file_upload_count_exceed'){
+                } else if (data.result == 'file_upload_count_exceed') {
                     alert("파일 업로드 갯수를 초과했습니다.");
-                    id_attach.value='';
+                    id_attach.value = '';
                     return false;
-                }else if(data.result == 'post_size_exceed'){
-                    alert('첨부파일의 용량이 큽니다. 작은 파일로 첨부해 주세요.')
-                    id_attach.value ='';
+                } else if (data.result == 'post_size_exceed') {
+                    alert('첨부파일의 용량이 큽니다. 작은 파일로 첨부해 주세요.');
+                    id_attach.value = '';
                     return false;
+                } else if (data.result == 'not_allowed_file') {
+                    alert('첨부할 수 없는 포맷의 파일이 첨부되었습니다.(exe, txt ..');
+                    id_attach.value = '';
+                    return false;
+
                 }
             } else if (xhr.status == 404) {
                 alert('통신실패')
@@ -87,10 +111,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const id_attach = document.querySelector("#id_attach");
     id_attach.addEventListener("change", () => {
 
-        if(id_attach.files.length > 3) {
-            id_attach.value= '';
+        if (id_attach.files.length > 3) {
+            id_attach.value = '';
             alert('첨부할 파일 수는 3 개 까지입니다.')
             return false;
         }
+
+        console.log(i)
     })
 })
